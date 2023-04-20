@@ -1,1 +1,10 @@
 name: Test Actions
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 4 * * *'
+    
+jobs:
+  scheduled:
