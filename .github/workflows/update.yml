@@ -4,7 +4,30 @@ on:
   push:
   workflow_dispatch:
   schedule:
-    - cron: 'every day 10:00'
+    - cron: 'every day 14:00'
     
 jobs:
   scheduled:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Python
+      uses: actions/setup-python@v4.3.0
+      with:
+        python-version: 3.8
+    - name: Install Python dependencies
+      # Install csv-diff with https://github.com/simonw/csv-diff/pull/19
+      run: python3 -m pip install git+https://github.com/mikecoop83/csv-diff@c3d32f758343a2ba3737d612e6e906fd9d77322b
+    - name: Fetch latest data
+      run: |-
+        cp apc_list.csv apc_list_old.csv
+        curl -o apc_list.csv -L https://www.elsevier.com/books-and-journals/journal-pricing/apc-pricelist
+        # Generate commit message using csv-diff
+        csv-diff apc_list_old.csv apc_list.csv --key "ISSN" --encoding "utf-8" --singular=journal --plural=journals | head -n 1 > message.txt
+    - name: Commit and push if it changed
+      run: |-
+        git config user.name "Automated"
+        git config user.email "actions@users.noreply.github.com"
+        git add apc_list.csv
+        timestamp=$(date -u)
+        git commit -F message.txt || exit 0
+        git push
