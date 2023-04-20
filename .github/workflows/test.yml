@@ -1,7 +1,9 @@
-# YAML is all spacing and indentation 
+# YAML is all spacing and indentation and key:value pairs
 # yamlchecker.com will check your syntax 
 # JSON will have nested {}
 # XML needs to have open and close tags
+
+version: 1
 
 team: '76ers'
 city: 'Philadelphia'
@@ -14,7 +16,7 @@ background: >
   Founded in 1946 and originally known as the Syracuse Nationals they are one of the oldest franchises
   in the NBA and one of only eight (out of 23) to survive the league's first decade.
   
-organization_history: |
+organization_history: |  #literal block character
   maintains new lines
   Syracuse Nationals
   1946-1963
