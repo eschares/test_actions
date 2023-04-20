@@ -4,7 +4,8 @@ on:
   push:
   workflow_dispatch:
   schedule:
-    - cron: '23 4 * * *'
+    - cron:
+      - schedule: 'every day 14:03'
     
 jobs:
   scheduled:
